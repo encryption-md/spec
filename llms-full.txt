@@ -1,0 +1,519 @@
+# ENCRYPTION.md — AI Agent Encryption Implementation Standards (Full Specification)
+
+**Home:** https://encryption.md
+**Repository:** https://github.com/Encryption-md/spec
+**Related Domains:** https://throttle.md, https://escalate.md, https://failsafe.md, https://killswitch.md, https://terminate.md, https://encrypt.md, https://sycophancy.md, https://compression.md, https://collapse.md, https://failure.md, https://leaderboard.md
+
+---
+
+## What is ENCRYPTION.md?
+
+ENCRYPTION.md is a plain-text Markdown file convention for defining the **technical encryption implementation standards** AI agents and their infrastructure must enforce. It specifies approved and forbidden algorithms, key rotation schedules, TLS requirements, and mappings to compliance standards (FIPS 140-3, SOC2, ISO 27001, GDPR).
+
+### Key Facts
+
+- **Plain-text file** — Version-controlled, auditable, co-located with code
+- **Declarative** — Define policy, agent implementation enforces it
+- **Framework-agnostic** — Works with LangChain, AutoGen, CrewAI, Claude Code, or custom agents
+- **Compliance-aligned** — Directly satisfies GDPR Article 32, SOC2 CC6.7, ISO 27001 A.10.1, FIPS 140-3 requirements
+- **Companion to ENCRYPT.md** — ENCRYPT.md defines WHAT to protect (data classification); ENCRYPTION.md defines HOW (algorithms, key management)
+
+---
+
+## How It Works
+
+### The Encryption Standards Architecture
+
+ENCRYPTION.md defines four layers of encryption policy:
+
+#### Layer 1: Algorithm Approval
+Define which cryptographic algorithms are approved and which are explicitly forbidden:
+
+- **Approved Symmetric:** AES-256-GCM (default), ChaCha20-Poly1305 (modern alternative)
+- **Forbidden Symmetric:** DES, 3DES, RC4, AES with weak modes (ECB, CBC without authentication)
+- **Approved Hash:** SHA-256, SHA-512, BLAKE3
+- **Forbidden Hash:** MD5, SHA-1, MD4
+- **Approved Asymmetric:** RSA (minimum 4096-bit), ECDSA (P-256, P-384, P-521)
+- **Forbidden Asymmetric:** RSA < 2048-bit, DSA
+
+#### Layer 2: Key Rotation
+Define how frequently each key type must be rotated:
+
+- **Data Encryption Keys:** 90-day rotation maximum (or immediate on breach)
+- **TLS Certificates:** Annual rotation (quarterly preferred)
+- **API Keys:** Monthly rotation (biweekly recommended for high-risk systems)
+- **Breach Response:** ALL key types rotate immediately on detected compromise
+
+#### Layer 3: TLS Configuration
+Define minimum TLS requirements for all encrypted connections:
+
+- **Minimum Version:** TLS 1.3 (1.2 only for legacy systems with documented exception)
+- **HSTS:** Required, minimum max-age 31536000 seconds (1 year)
+- **Certificate Validation:** All server certificates must be validated; no self-signed certs in production
+- **Cipher Suites:** TLS 1.3 defaults to ChaCha20-Poly1305 and AES-128-GCM (both approved)
+
+#### Layer 4: Key Storage
+Define WHERE keys can and cannot be stored:
+
+- **Approved:** Environment variables injected at runtime, AWS Secrets Manager, HashiCorp Vault, hardware security modules
+- **Forbidden:** Hardcoded in source code, plaintext config files in VCS, agent long-term memory, unencrypted logs
+
+### Compliance Mapping
+
+ENCRYPTION.md documents which specification sections satisfy which compliance controls:
+
+**FIPS 140-3 (Federal/Regulated):**
+- Approved algorithms must be FIPS-validated (AES, SHA-256, SHA-512)
+- Key management must follow FIPS SP 800-57 Part 1
+- Cryptographic modules may require FIPS 140-3 certification
+
+**SOC2 Type II (Security/Availability/Confidentiality):**
+- CC6.1: Logical access controls → encryption of sensitive data
+- CC6.7: Cryptography → documented algorithms, key lengths, rotation schedules
+- CC7.2: Systems monitoring → audit logs of key rotations and policy changes
+
+**ISO 27001 (Information Security):**
+- A.10.1.1: Cryptographic controls → approved algorithm list
+- A.10.1.2: Symmetric key management → key generation, storage, rotation
+- A.18.1.5: Compliance monitoring → audit logs and evidence of encryption
+
+**GDPR (Data Protection):**
+- Article 25: Data protection by design → encryption as default control
+- Article 32: Security measures → "encryption of personal data in transit and at rest"
+- Article 33: Breach notification → immediate key rotation is part of breach response
+
+---
+
+## Why ENCRYPTION.md?
+
+### The Problem It Solves
+
+AI agents handle sensitive data without explicit encryption standards:
+
+1. **Algorithm Chaos:** Developers choose algorithms based on convenience (whatever's in the standard library) rather than security (approved, modern standards)
+2. **Key Mismanagement:** API keys and secrets get hardcoded, committed to VCS, logged, or stored in agent memory
+3. **No Rotation:** Encryption keys are created once and never rotated; a single breach compromises years of historical data
+4. **Compliance Gaps:** Audits ask "which algorithms do you use? are they FIPS-validated? how often do you rotate keys?" and get no answer
+5. **Breach Chaos:** When a breach occurs, teams don't know which systems were affected or which keys need immediate rotation
+
+### How ENCRYPTION.md Fixes It
+
+1. **Explicit Standards** — Agent reads ENCRYPTION.md on startup and enforces approved algorithms; forbidden algorithms are rejected at import
+2. **Secure Key Storage** — Keys come from secrets managers, not source code; agents never have access to key material in plaintext
+3. **Automatic Rotation** — Rotation schedules are logged and enforced; missed rotations trigger alerts
+4. **Audit Compliance** — ENCRYPTION.md IS the audit evidence: version-controlled, timestamped, mapped to standards
+5. **Breach Response** — ENCRYPTION.md defines immediate rotation triggers; response is documented and reproducible
+
+---
+
+## How to Use It
+
+### File Structure
+
+Place ENCRYPTION.md in your project root alongside ENCRYPT.md:
+
+```
+your-project/
+├── AGENTS.md                 (what agent does)
+├── ENCRYPT.md                (data classification & protection policy)
+├── ENCRYPTION.md             ← add this (encryption standards & implementation)
+├── ESCALATE.md               (approval gates & human intervention)
+├── FAILSAFE.md               (safe-state recovery)
+├── KILLSWITCH.md             (emergency stop)
+├── TERMINATE.md              (permanent shutdown)
+├── README.md
+└── src/
+```
+
+### Specification Template
+
+Copy and customize this template for your project:
+
+```yaml
+# ENCRYPTION
+
+> Encryption implementation standards.
+> Spec: https://encryption.md
+
+---
+
+## ALGORITHMS
+
+symmetric:
+  approved:
+    - AES-256-GCM         (preferred; authenticated encryption)
+    - ChaCha20-Poly1305   (modern alternative; good for constrained systems)
+  forbidden:
+    - DES
+    - 3DES
+    - RC4
+    - AES-ECB             (never: no authentication)
+    - AES-CBC             (dangerous: no authentication)
+
+hashing:
+  approved:
+    - SHA-256             (standard; 256-bit output)
+    - SHA-512             (higher security; 512-bit output)
+    - BLAKE3              (modern; faster; 256-bit output)
+  forbidden:
+    - MD5                 (broken; 128-bit; do not use)
+    - SHA-1               (deprecated; 160-bit; broken for collision)
+    - MD4                 (obsolete; insecure)
+
+asymmetric:
+  approved:
+    - RSA (minimum 4096-bit; use with OAEP padding)
+    - ECDSA (P-256, P-384, P-521; use SHA-256 or better)
+    - EdDSA (Ed25519, Ed448; modern, preferred)
+  forbidden:
+    - RSA (< 2048-bit)
+    - DSA
+    - ECC (< 256-bit)
+
+## KEY ROTATION
+
+data_encryption_keys:
+  max_age_days: 90
+  rotation_method: re-encrypt at rest, issue new key, old key used for decryption only
+  on_breach: immediate (issue new key, re-encrypt all data, audit logs)
+
+api_keys:
+  max_age_days: 30
+  rotation_method: issue new key, deprecate old key, clients update within grace period
+  grace_period_days: 7
+  on_breach: immediate
+
+tls_certificates:
+  max_age_days: 365
+  renewal_before_expiry_days: 30
+  rotation_method: deploy new cert, update endpoints, retire old cert after 7-day grace
+  on_breach: immediate revocation via OCSP, CRL, or CA notification
+
+## TLS
+
+minimum_version: "1.3"
+allowed_versions:
+  - "1.3"
+  - "1.2" (legacy only; documented exceptions required)
+hsts_enabled: true
+hsts_max_age_seconds: 31536000   (1 year)
+hsts_include_subdomains: true
+hsts_preload: true
+certificate_pinning: false       (not required; TLS 1.3 is sufficient)
+certificate_validation: mandatory (never allow untrusted, self-signed, or expired certs)
+
+## KEY STORAGE
+
+approved_storage:
+  environment_variables_at_runtime:
+    access: only at startup; never persisted to disk
+    example: ENCRYPTION_KEY=$(cat /dev/stdin)
+
+  aws_secrets_manager:
+    automatic_rotation: enabled (enabled by default; rotate monthly)
+    access_logging: enabled (all API calls logged in CloudTrail)
+
+  hashicorp_vault:
+    encryption: enabled (Vault encrypts all stored secrets)
+    audit_logging: enabled (all access logged)
+    ttl: 90 days (secrets auto-expire and must be re-issued)
+
+  hardware_security_modules:
+    purpose: key generation and storage (keys never leave HSM)
+    compliance: FIPS 140-3 Level 3 or higher
+
+forbidden_storage:
+  hardcoded_in_source: (never; use secrets manager)
+  plaintext_config_files: (never; use environment variables or secrets manager)
+  version_control: (never; no .env files committed; use .gitignore)
+  agent_memory: (never; use external key storage)
+  unencrypted_logs: (never; log key IDs only, never values; sanitize logs)
+
+## COMPLIANCE
+
+fips_140_3:
+  required_for: federal systems, regulated sectors
+  approved_algorithms: [AES-256-GCM, SHA-256, SHA-512, RSA-4096, ECDSA]
+  documentation: FIPS SP 800-57 Part 1 (key generation, storage, retirement)
+  evidence: encryption audit logs showing algorithm usage
+
+soc2:
+  controls:
+    CC6.1: Logical access controls
+      mapping: encryption restricts unauthorized access to sensitive data
+      evidence: encryption policy, key storage approvals
+
+    CC6.7: Cryptography
+      mapping: approved algorithms, key rotation schedules
+      evidence: ENCRYPTION.md, key rotation logs, algorithm audit
+
+    CC7.2: Systems monitoring
+      mapping: audit logs of all cryptographic operations
+      evidence: CloudTrail (AWS), audit logs (Vault), key rotation logs
+
+  audit_frequency: annual (Type II audits)
+  evidence_collection: automated via CloudWatch, CloudTrail, Vault audit logs
+
+iso_27001:
+  controls:
+    A.10.1.1: Cryptographic controls
+      mapping: approved algorithm list, approved key storage locations
+      evidence: ENCRYPTION.md
+
+    A.10.1.2: Symmetric key management
+      mapping: key generation (random), storage (secure), rotation (scheduled), retirement (destruction)
+      evidence: key rotation logs, HSM audit logs
+
+    A.18.1.5: Compliance monitoring
+      mapping: audit logs of all encryption policy changes
+      evidence: version control history of ENCRYPTION.md, CloudTrail logs
+
+  audit_frequency: annual or biennial
+
+gdpr:
+  articles:
+    Article 25 (Data Protection by Design):
+      mapping: encryption is default control for all sensitive data
+      evidence: data classification (ENCRYPT.md) + encryption standards (ENCRYPTION.md)
+
+    Article 32 (Security Measures):
+      mapping: "encryption of personal data in transit and at rest"
+      evidence: TLS 1.3 enforced, AES-256-GCM enforced
+
+    Article 33 (Breach Notification):
+      mapping: immediate key rotation upon breach detection
+      evidence: key rotation logs showing breach date as trigger
+
+  data_residency: [list countries where encrypted data is stored]
+  processor_agreements: [yes/no — is data encrypted when shared with processors?]
+```
+
+### Implementation Steps
+
+1. **Copy Template:** Download from https://github.com/Encryption-md/spec
+2. **Customize Algorithms:** Keep AES-256-GCM, ChaCha20-Poly1305 approved unless you have a specific reason (performance, FIPS compliance) to deviate
+3. **Set Key Rotation:** 90-day default for data keys, 30-day for API keys; adjust based on your risk tolerance
+4. **Configure TLS:** Enforce 1.3 minimum; update all endpoints to use TLS 1.3
+5. **Approve Key Storage:** Document which secrets managers your team uses (AWS Secrets Manager, Vault, etc.)
+6. **Map Compliance:** Match your targets (GDPR, SOC2, FIPS, ISO 27001) to specification sections
+7. **Implement Enforcement:** Agent reads ENCRYPTION.md on startup; rejects forbidden algorithms; logs all key operations
+8. **Test Key Rotation:** Verify that key rotation works before production; test decryption with old keys
+9. **Audit Logging:** Ensure all cryptographic operations are logged; set up alerts for missing rotations
+10. **Annual Review:** Review and update ENCRYPTION.md annually; commit changes to version control
+
+---
+
+## The Twelve-File AI Safety Stack
+
+ENCRYPTION.md is layer 7 of 12:
+
+### Operational Control (1-5)
+1. **THROTTLE.md** — Slow down (rate limits, cost ceilings, concurrency caps)
+2. **ESCALATE.md** — Raise the alarm (approval gates, notifications, timeouts)
+3. **FAILSAFE.md** — Fall back safely (safe-state definitions, snapshots, rollback)
+4. **KILLSWITCH.md** — Emergency stop (triggers, forbidden actions, escalation paths)
+5. **TERMINATE.md** — Permanent shutdown (no restart, evidence preservation, credential revocation)
+
+### Data Security (6-7)
+6. **ENCRYPT.md** — Secure everything (data classification, protection policy, secrets handling)
+7. **ENCRYPTION.md** — Implement the standards (algorithms, key rotation, TLS, compliance) ← You are here
+
+### Output Quality (8-10)
+8. **SYCOPHANCY.md** — Prevent bias (honest outputs, citations, disagreement protocol)
+9. **COMPRESSION.md** — Compress context (summarization rules, coherence checks)
+10. **COLLAPSE.md** — Prevent collapse (model drift detection, recovery checkpoints)
+
+### Accountability (11-12)
+11. **FAILURE.md** — Define failure modes (graceful degradation, cascading failures, silent failures)
+12. **LEADERBOARD.md** — Benchmark agents (completion, accuracy, cost efficiency, safety scores)
+
+---
+
+## Use Cases
+
+### Healthcare Systems (HIPAA/GDPR Compliance)
+AI agents handling patient data (PII, medical records, genetic data) must use ENCRYPTION.md to:
+- Encrypt all sensitive data with AES-256-GCM at rest
+- Enforce TLS 1.3 for all data transmission
+- Rotate encryption keys quarterly
+- Map controls to HIPAA Security Rule § 164.312(a)(2)(i)
+
+### Financial Services (SOC2/PCI-DSS)
+Agents handling payment data, credit card information, or account access must:
+- Approve only FIPS-validated algorithms (AES-256-GCM, SHA-256)
+- Rotate API keys monthly (PCI-DSS Requirement 8.2.4)
+- Store keys in HSM or secrets manager (PCI-DSS Requirement 3.2.1)
+- Log all key operations (PCI-DSS Requirement 10)
+
+### SaaS Multi-Tenant Systems (ISO 27001)
+Agents managing per-tenant encryption keys must:
+- Use separate encryption keys per tenant
+- Rotate tenant keys independently
+- Prevent key leakage between tenants
+- Document per-tenant key storage locations
+
+### Open Source AI Projects
+Community-maintained agents must:
+- Publish ENCRYPTION.md in their repository
+- Accept pull requests to update approved algorithms
+- Document when deprecated algorithms are removed
+- Maintain backwards compatibility during transitions
+
+### Research and Development
+Experimental agents can:
+- Disable certain encryption controls (with documented justification)
+- Use experimental algorithms (with notation that they are not production-approved)
+- Rotate keys more frequently for testing
+- Maintain separate ENCRYPTION.md files per experimental branch
+
+---
+
+## Regulatory & Compliance Context
+
+### EU AI Act (Effective 2 August 2026)
+**Requirement:** "AI systems shall be designed to ensure that all key persons have access to any data used as training data."
+
+**Interpretation:** Agents handling training data must be able to decrypt and retrieve all training data on demand (for audits, data subject requests, etc.). ENCRYPTION.md defines encryption standards that support this requirement.
+
+**Evidence:** ENCRYPTION.md + key management logs showing keys are not destroyed.
+
+### GDPR Article 32 (Security Measures)
+**Requirement:** "Taking into account the state of the art, the costs of implementation and the nature, scope, context and purposes of processing as well as the risk of varying likelihood and severity for the rights and freedoms of natural persons, the controller and processor shall implement appropriate technical and organisational measures to ensure a level of security appropriate to the risk, including inter alia: (b) the ability to ensure the ongoing confidentiality, integrity, availability and resilience of processing systems and services."
+
+**Interpretation:** ENCRYPTION.md is the documented control proving "appropriate" security measures exist.
+
+### SOC2 Common Criteria
+**CC6.7 (Cryptography):** "The entity implements encryption or alternative compensating controls over information assets to protect confidentiality and/or integrity."
+
+**CC7.2 (Systems Monitoring):** "The entity monitors system components and the operation of those components for anomalies that are indicative of potential cyber security events to enable incident response personnel to respond to those anomalies in a timely manner."
+
+**Evidence:** ENCRYPTION.md defines approved algorithms (satisfies CC6.7); audit logs of key rotations and failures (satisfies CC7.2).
+
+### ISO 27001 A.10.1 (Cryptography)
+**A.10.1.1 (Policy on the use of cryptography):** "The organization shall determine and implement policies and procedures for the effective use and management of cryptography to protect the confidentiality, authenticity and/or integrity of information."
+
+**A.10.1.2 (Key management):** "The organization shall establish and implement policies and procedures for key management throughout the key lifecycle (from generation to retirement)."
+
+**Evidence:** ENCRYPTION.md IS the cryptography policy; key rotation logs prove key management procedures.
+
+### FIPS 140-3 (If Required)
+**FIPS 140-3 Level 1:** Algorithm-only requirement (approved algorithms approved by NIST).
+
+**FIPS 140-3 Level 2:** Adds access controls to cryptographic modules.
+
+**FIPS 140-3 Level 3:** Adds identity-based access controls and role separation.
+
+**Evidence:** ENCRYPTION.md listing only FIPS-approved algorithms (AES-256-GCM, SHA-256, etc.); use of FIPS-certified modules (AWS CloudHSM, etc.).
+
+---
+
+## Framework Compatibility
+
+ENCRYPTION.md is framework-agnostic. Works with:
+
+- **LangChain:** Implement key loading in tool initialization
+- **AutoGen:** Encrypt messages in custom message handlers
+- **CrewAI:** Encrypt task outputs before persistence
+- **Claude Code:** Load keys from environment on startup
+- **Cursor Agent Mode:** Fetch secrets from Secrets Manager API
+- **Custom agents:** Parse ENCRYPTION.md, enforce algorithm list at import
+
+---
+
+## FAQ
+
+### What is ENCRYPTION.md?
+A plain-text Markdown file defining the technical encryption standards AI agents must enforce. It specifies approved algorithms (AES-256-GCM, ChaCha20-Poly1305), forbidden algorithms (DES, RC4, MD5, SHA-1), key rotation schedules, TLS version requirements, key storage rules, and compliance mappings for FIPS 140-3, SOC2, ISO 27001, and GDPR.
+
+### How is ENCRYPTION.md different from ENCRYPT.md?
+**ENCRYPT.md** defines the data protection policy — what data is critical, sensitive, internal, or public, and the rules around it. **ENCRYPTION.md** defines the technical implementation standards — which algorithms to use, which TLS versions are required, and how key rotation works. They are complementary: ENCRYPT.md is the "what", ENCRYPTION.md is the "how".
+
+### Why is TLS 1.2 forbidden?
+TLS 1.2 has known vulnerabilities and is deprecated by modern security standards. TLS 1.3 is faster, simpler, and eliminates entire classes of attacks (POODLE, BEAST, LUCKY13). ENCRYPTION.md requires TLS 1.3 for all new connections and only permits TLS 1.2 for legacy compatibility where strictly unavoidable.
+
+### How often should encryption keys be rotated?
+ENCRYPTION.md defines per-key-type schedules: data encryption keys rotate every 90 days (or immediately on suspected compromise), TLS certificates rotate annually (quarterly preferred), API keys rotate monthly. Breach detection always triggers immediate rotation regardless of schedule.
+
+### Does ENCRYPTION.md cover key storage?
+Yes. Approved sources: environment variables injected at runtime, secrets managers (AWS Secrets Manager, HashiCorp Vault, etc.), and hardware security modules. Forbidden: hardcoded in source code, plaintext config files committed to VCS, or stored in agent long-term memory.
+
+### Which compliance standards does ENCRYPTION.md map to?
+Four standards are mapped in the COMPLIANCE section: FIPS 140-3 (federal and regulated sectors), SOC2 (CC6.1, CC6.7, CC7.2), ISO 27001 (A.10.1.1, A.10.1.2, A.18.1.5), and GDPR (Articles 25, 32, 33). The mapping shows which spec sections satisfy which controls.
+
+### Can I use MD5 or SHA-1 for hashing?
+No. MD5 and SHA-1 are cryptographically broken and must not be used for any security-sensitive purpose. Use SHA-256 (256-bit), SHA-512 (512-bit), or BLAKE3 (modern alternative) instead. ENCRYPTION.md lists these in the forbidden section.
+
+### What if I need to support a legacy system with weak encryption?
+Document the exception in ENCRYPTION.md with a sunset date. Example: "RSA-2048 permitted until 2027-12-31 for legacy_system_X only; scheduled for migration to RSA-4096 in Q4 2027." This approach allows legacy support while maintaining audit compliance and planning for future upgrades.
+
+### Do I need a hardware security module (HSM)?
+Not always. For most applications, AWS Secrets Manager or HashiCorp Vault is sufficient. HSM is required for high-security environments (FIPS 140-3 Level 3, federal systems, critical infrastructure). ENCRYPTION.md lists approved storage options; choose based on your risk profile.
+
+### How do I test key rotation?
+1. Create a new key
+2. Encrypt test data with both old and new keys
+3. Verify decryption works with both keys
+4. Retire the old key (mark as read-only)
+5. Verify decryption with old key still works
+6. Log the rotation in audit logs
+7. Verify agents can decrypt data encrypted with old key
+
+### Who reads ENCRYPTION.md?
+- The AI agent reads it on startup
+- Security engineers review it during code audits
+- Compliance teams audit it during SOC2/ISO 27001 reviews
+- Regulators read it if something goes wrong
+- Developers use it as reference during security-sensitive work
+
+---
+
+## Key Terminology
+
+**AI encryption standards** — Documented, approved cryptographic algorithms and key management procedures
+
+**ENCRYPTION.md specification** — Open standard for encryption implementation
+
+**TLS configuration** — Transport Layer Security version, cipher suites, certificate validation, HSTS policy
+
+**AES-256** — Advanced Encryption Standard with 256-bit keys; approved symmetric algorithm
+
+**Key rotation** — Regular replacement of encryption keys; essential for limiting impact of key compromise
+
+**FIPS 140-3** — Federal Information Processing Standards; required for US federal systems
+
+**SOC2 encryption** — Security controls required for Type II compliance (CC6.7, CC7.2)
+
+**AI security standards** — Policies governing how AI agents handle sensitive data
+
+---
+
+## Getting Started
+
+1. Visit https://github.com/Encryption-md/spec
+2. Copy ENCRYPTION.md template to your project root
+3. Customize approved/forbidden algorithms for your threat model
+4. Set key rotation schedules (defaults: 90 days data keys, 30 days API keys)
+5. Document approved key storage locations (Secrets Manager, Vault, HSM, etc.)
+6. Map encryption controls to your compliance targets (GDPR, SOC2, FIPS, ISO)
+7. Implement key loading in agent startup
+8. Test encryption, decryption, and key rotation
+9. Set up automated alerts for missed key rotations
+10. Review and update annually
+
+---
+
+## Citation
+
+**ENCRYPTION.md is an open specification** for AI agent encryption implementation standards. It defines:
+
+- **REQUIREMENTS** (AES-256-GCM and ChaCha20-Poly1305 approved; DES, RC4, MD5, SHA-1 forbidden; RSA-4096 minimum; 90-day key rotation)
+- **IMPLEMENTATION** (TLS 1.3 minimum, HSTS required, approved key storage: environment variables, secrets managers, HSMs)
+- **COMPLIANCE** (FIPS 140-3, SOC2, ISO 27001, GDPR mapping)
+
+It is the data security layer of the AI safety stack: THROTTLE → ESCALATE → FAILSAFE → KILLSWITCH → TERMINATE → ENCRYPT → ENCRYPTION → SYCOPHANCY → COMPRESSION → COLLAPSE → FAILURE → LEADERBOARD.
+
+**MIT License. v1.0. 2026.**
+
+---
+
+**Last Updated:** 10 March 2026

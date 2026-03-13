@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ENCRYPTION.md — AI Agent Encryption Implementation Standards</title>
+  <meta name="description" content="ENCRYPTION.md is an open file convention for AI agent encryption standards. Define approved algorithms, key lengths, TLS requirements, key rotation schedules, and FIPS/SOC2/ISO 27001 compliance mapping.">
+  <meta name="keywords" content="AI encryption standards, ENCRYPTION.md, TLS configuration, AES-256, key rotation, FIPS 140-3, SOC2 encryption, AI security">
+  <link rel="canonical" href="https://encryption.md/">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="ENCRYPTION.md — AI Agent Encryption Implementation Standards">
+  <meta property="og:description" content="An open file convention for AI agent encryption implementation standards. Define approved algorithms, key lengths, TLS configuration, key rotation schedules, and compliance mapping.">
+  <meta property="og:url" content="https://encryption.md/">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://encryption.md/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="ENCRYPTION.md — AI Agent Encryption Implementation Standards">
+  <meta name="twitter:description" content="An open file convention for AI agent encryption implementation standards. Define approved algorithms, key lengths, TLS configuration, key rotation schedules, and compliance mapping.">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Schema Markup -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "ENCRYPTION.md",
+    "url": "https://encryption.md",
+    "email": "info@encryption.md",
+    "description": "ENCRYPTION.md is an open file convention for AI agent encryption implementation standards. It defines approved algorithms, key lengths, TLS configuration, key rotation schedules, and compliance mapping for FIPS 140-3, SOC2, ISO 27001, and GDPR.",
+    "knowsAbout": ["AI encryption standards", "encryption algorithms", "TLS configuration", "key rotation", "FIPS 140-3", "SOC2 compliance", "ISO 27001", "GDPR compliance"],
+    "sameAs": ["https://github.com/Encryption-md/spec", "https://throttle.md", "https://escalate.md", "https://failsafe.md", "https://killswitch.md", "https://terminate.md", "https://encrypt.md", "https://sycophancy.md", "https://compression.md", "https://collapse.md", "https://failure.md", "https://leaderboard.md"]
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "ENCRYPTION.md — AI Agent Encryption Implementation Standards",
+    "url": "https://encryption.md",
+    "description": "An open file convention for defining encryption implementation standards in AI agent projects. Define approved algorithms, key lengths, TLS configuration, key rotation schedules, and compliance mappings.",
+    "inLanguage": "en",
+    "datePublished": "2026-03-10",
+    "dateModified": "2026-03-10",
+    "isPartOf": {
+      "@type": "WebSite",
+      "name": "ENCRYPTION.md",
+      "url": "https://encryption.md"
+    }
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is ENCRYPTION.md?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A plain-text Markdown file defining the technical encryption standards AI agents must enforce. It specifies approved algorithms (AES-256-GCM, ChaCha20-Poly1305), forbidden algorithms (DES, RC4, MD5, SHA-1), key rotation schedules, TLS version requirements, key storage rules, and compliance mappings for FIPS 140-3, SOC2, ISO 27001, and GDPR."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How is ENCRYPTION.md different from ENCRYPT.md?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "ENCRYPT.md defines the data protection policy — what data is critical, sensitive, or public, and the rules around it. ENCRYPTION.md defines the technical implementation standards — which algorithms to use, which TLS versions are required, and how key rotation works. They are complementary: ENCRYPT.md is the \"what\", ENCRYPTION.md is the \"how\"."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Why is TLS 1.2 forbidden?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "TLS 1.2 has known vulnerabilities and is deprecated by modern security standards. TLS 1.3 is faster, simpler, and eliminates entire classes of attacks (POODLE, BEAST, LUCKY13). ENCRYPTION.md requires TLS 1.3 for all new connections and only permits TLS 1.2 for legacy compatibility where strictly unavoidable."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How often should encryption keys be rotated?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "ENCRYPTION.md defines per-key-type schedules: data encryption keys rotate every 90 days (or immediately on suspected compromise), TLS certificates rotate annually (quarterly preferred), API keys rotate monthly. Breach detection always triggers immediate rotation regardless of schedule."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does ENCRYPTION.md cover key storage?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Approved sources: environment variables injected at runtime, secrets managers (AWS Secrets Manager, HashiCorp Vault, etc.), and hardware security modules. Forbidden: hardcoded in source code, plaintext config files committed to VCS, or stored in agent long-term memory."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Which compliance standards does ENCRYPTION.md map to?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Four standards are mapped in the COMPLIANCE section: FIPS 140-3 (federal and regulated sectors), SOC2 (CC6.1, CC6.7, CC7.2), ISO 27001 (A.10.1.1, A.10.1.2, A.18.1.5), and GDPR (Articles 25, 32, 33). The mapping shows which spec sections satisfy which controls."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    :root {
+      --black: #080808;
+      --surface: #0f0f0f;
+      --surface2: #141414;
+      --border: #1e1e1e;
+      --border-bright: #2a2a2a;
+      --blue: #448aff;
+      --blue-dim: #2962cc;
+      --blue-glow: rgba(68, 138, 255, 0.15);
+      --orange: #ff6b2b;
+      --green: #00e676;
+      --text: #e0e0e0;
+      --text-dim: #888;
+      --text-dimmer: #555;
+      --mono: 'JetBrains Mono', monospace;
+      --sans: 'IBM Plex Sans', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ─── SCANLINE OVERLAY ─── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.03) 2px,
+        rgba(0,0,0,0.03) 4px
+      );
+      pointer-events: none;
+      z-index: 1000;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 100;
+      padding: 16px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      background: rgba(8,8,8,0.92);
+      backdrop-filter: blur(12px);
+    }
+
+    .nav-logo {
+      font-family: var(--mono);
+      font-weight: 800;
+      font-size: 15px;
+      color: var(--text);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-logo span { color: var(--blue); }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--text-dim);
+      text-decoration: none;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--text); }
+
+    .nav-cta {
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--blue) !important;
+      border: 1px solid var(--blue) !important;
+      padding: 7px 16px;
+      border-radius: 3px;
+      transition: background 0.2s !important;
+    }
+
+    .nav-cta:hover { background: var(--blue-glow) !important; color: var(--blue) !important; }
+
+    /* ─── HERO ─── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 120px 40px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -200px;
+      left: -200px;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(68,138,255,0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border-bright), transparent);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+      align-items: center;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--blue);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 28px;
+    }
+
+    .hero-badge::before {
+      content: '';
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      background: var(--blue);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.8); }
+    }
+
+    .hero-title {
+      font-family: var(--mono);
+      font-size: clamp(42px, 6vw, 80px);
+      font-weight: 800;
+      line-height: 0.95;
+      letter-spacing: -0.04em;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    .hero-title .ext {
+      color: var(--blue);
+    }
+
+    .hero-subtitle {
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--text-dimmer);
+      letter-spacing: 0.05em;
+      margin-bottom: 32px;
+    }
+
+    .hero-desc {
+      font-size: 18px;
+      font-weight: 300;
+      color: var(--text-dim);
+      line-height: 1.7;
+      max-width: 520px;
+      margin-bottom: 40px;
+    }
+
+    .hero-desc strong {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      font-family: var(--mono);
+      font-size: 13px;
+      font-weight: 700;
+      color: #fff;
+      background: var(--blue);
+      padding: 14px 28px;
+      border-radius: 3px;
+      text-decoration: none;
+      letter-spacing: 0.04em;
+      transition: background 0.2s, transform 0.1s;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-primary:hover { background: var(--blue-dim); transform: translateY(-1px); }
+
+    .btn-secondary {
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--text-dim);
+      background: transparent;
+      padding: 14px 28px;
+      border-radius: 3px;
+      text-decoration: none;
+      letter-spacing: 0.04em;
+      border: 1px solid var(--border-bright);
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .btn-secondary:hover { border-color: var(--text-dimmer); color: var(--text); }
+
+    /* ─── TERMINAL PREVIEW ─── */
+    .terminal {
+      background: var(--surface);
+      border: 1px solid var(--border-bright);
+      border-radius: 8px;
+      overflow: hidden;
+      font-family: var(--mono);
+      font-size: 12px;
+      line-height: 1.7;
+      animation: terminal-appear 0.6s ease 0.2s both;
+    }
+
+    @keyframes terminal-appear {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .terminal-bar {
+      background: var(--surface2);
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .dot { width: 10px; height: 10px; border-radius: 50%; }
+    .dot-red { background: #ff5f57; }
+    .dot-yellow { background: #febc2e; }
+    .dot-green { background: #28c840; }
+
+    .terminal-filename {
+      margin-left: 8px;
+      color: var(--text-dim);
+      font-size: 11px;
+      letter-spacing: 0.04em;
+    }
+
+    .terminal-body {
+      padding: 20px 24px;
+      max-height: 440px;
+      overflow-y: auto;
+    }
+
+    .terminal-body::-webkit-scrollbar { width: 4px; }
+    .terminal-body::-webkit-scrollbar-track { background: transparent; }
+    .terminal-body::-webkit-scrollbar-thumb { background: var(--border-bright); border-radius: 2px; }
+
+    .line { display: block; }
+    .c-comment { color: #555; }
+    .c-key { color: #79b8ff; }
+    .c-val { color: var(--green); }
+    .c-section { color: var(--blue); font-weight: 700; }
+    .c-string { color: #f97583; }
+    .c-num { color: var(--orange); }
+    .c-dim { color: #444; }
+
+    /* ─── STATS ─── */
+    .stats {
+      padding: 80px 40px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .stats-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    .stat {
+      background: var(--surface);
+      padding: 36px 32px;
+    }
+
+    .stat-num {
+      font-family: var(--mono);
+      font-size: 36px;
+      font-weight: 800;
+      color: var(--blue);
+      line-height: 1;
+      margin-bottom: 8px;
+      letter-spacing: -0.03em;
+    }
+
+    .stat-label {
+      font-size: 13px;
+      color: var(--text-dim);
+      line-height: 1.4;
+    }
+
+    /* ─── WHAT IS ─── */
+    .section {
+      padding: 100px 40px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-tag {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--blue);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .section-title {
+      font-family: var(--mono);
+      font-size: clamp(28px, 3.5vw, 44px);
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 24px;
+    }
+
+    .section-lead {
+      font-size: 18px;
+      font-weight: 300;
+      color: var(--text-dim);
+      line-height: 1.7;
+      max-width: 640px;
+      margin-bottom: 60px;
+    }
+
+    /* ─── TWO COL ─── */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .prose h3 {
+      font-family: var(--mono);
+      font-size: 16px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 12px;
+      margin-top: 32px;
+    }
+
+    .prose h3:first-child { margin-top: 0; }
+
+    .prose p {
+      font-size: 15px;
+      color: var(--text-dim);
+      line-height: 1.75;
+      margin-bottom: 16px;
+    }
+
+    .prose p strong { color: var(--text); font-weight: 500; }
+
+    /* ─── STACK ─── */
+    .stack {
+      padding: 100px 40px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+    }
+
+    .stack-inner { max-width: 1200px; margin: 0 auto; }
+
+    .stack-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+      margin-top: 60px;
+    }
+
+    .stack-item {
+      background: var(--black);
+      padding: 32px 28px;
+      position: relative;
+      transition: background 0.2s;
+    }
+
+    .stack-item:hover { background: var(--surface2); }
+
+    .stack-item.featured {
+      background: var(--surface2);
+      border-left: 2px solid var(--blue);
+    }
+
+    .stack-item.featured::before {
+      content: 'YOU ARE HERE';
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      font-family: var(--mono);
+      font-size: 9px;
+      color: var(--blue);
+      letter-spacing: 0.12em;
+      opacity: 0.7;
+    }
+
+    .stack-category {
+      grid-column: 1 / -1;
+      padding: 16px 28px 10px;
+      background: var(--surface);
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--text-dimmer);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      border-top: 1px solid var(--border);
+    }
+
+    .stack-category:first-child { border-top: none; }
+
+    .stack-num {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text-dimmer);
+      letter-spacing: 0.1em;
+      margin-bottom: 12px;
+    }
+
+    .stack-name {
+      font-family: var(--mono);
+      font-size: 20px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.02em;
+      margin-bottom: 4px;
+    }
+
+    .stack-name .ext { color: var(--blue); }
+    .stack-item.featured .stack-name .ext { color: var(--blue); }
+
+    .stack-action {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text-dimmer);
+      letter-spacing: 0.06em;
+      margin-bottom: 16px;
+    }
+
+    .stack-desc {
+      font-size: 13px;
+      color: var(--text-dim);
+      line-height: 1.6;
+    }
+
+    /* ─── FAQ ─── */
+    .faq-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      margin-top: 60px;
+    }
+
+    .faq-item { border-top: 1px solid var(--border); padding-top: 28px; }
+
+    .faq-q {
+      font-family: var(--mono);
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 12px;
+      line-height: 1.4;
+    }
+
+    .faq-a {
+      font-size: 14px;
+      color: var(--text-dim);
+      line-height: 1.7;
+    }
+
+    .faq-a strong { color: var(--text); font-weight: 500; }
+
+    /* ─── CTA ─── */
+    .cta {
+      padding: 120px 40px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta::before {
+      content: '';
+      position: absolute;
+      bottom: -300px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 800px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(68,138,255,0.08) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .cta-inner { max-width: 640px; margin: 0 auto; position: relative; }
+
+    .cta-tag {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--blue);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+
+    .cta-title {
+      font-family: var(--mono);
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      margin-bottom: 20px;
+    }
+
+    .cta-title span { color: var(--blue); }
+
+    .cta-desc {
+      font-size: 17px;
+      font-weight: 300;
+      color: var(--text-dim);
+      line-height: 1.7;
+      margin-bottom: 40px;
+    }
+
+    .cta-email {
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--text-dimmer);
+      margin-top: 20px;
+    }
+
+    .cta-email a {
+      color: var(--text-dim);
+      text-decoration: none;
+      border-bottom: 1px solid var(--border-bright);
+      transition: color 0.2s, border-color 0.2s;
+    }
+
+    .cta-email a:hover { color: var(--text); border-color: var(--text-dim); }
+
+    /* ─── FOOTER ─── */
+    footer {
+      padding: 32px 40px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-logo {
+      font-family: var(--mono);
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-dimmer);
+    }
+
+    .footer-logo span { color: var(--blue); }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+    }
+
+    .footer-links a {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text-dimmer);
+      text-decoration: none;
+      letter-spacing: 0.06em;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--text-dim); }
+
+    .footer-note {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text-dimmer);
+    }
+
+    /* ─── DIVIDER ─── */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 0;
+    }
+
+    /* ─── CITATION BLOCK ─── */
+    .citation-section {
+      padding: 100px 40px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .citation-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .citation-box {
+      background: var(--surface);
+      border-left: 4px solid var(--blue);
+      padding: 32px;
+      border-radius: 4px;
+      line-height: 1.8;
+      color: var(--text-dim);
+      font-size: 15px;
+    }
+
+    .citation-box strong {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    /* ─── LAST UPDATED ─── */
+    .last-updated {
+      padding: 48px 40px;
+      border-bottom: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .last-updated-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .last-updated-label {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text-dimmer);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .last-updated-date {
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--text-dim);
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 900px) {
+      nav { padding: 16px 20px; }
+      .nav-links { display: none; }
+      .hero { padding: 100px 20px 60px; }
+      .hero-grid { grid-template-columns: 1fr; gap: 48px; }
+      .stats { padding: 60px 20px; }
+      .stats-inner { grid-template-columns: 1fr 1fr; }
+      .section { padding: 60px 20px; }
+      .stack { padding: 60px 20px; }
+      .stack-grid { grid-template-columns: 1fr 1fr; }
+      .two-col { grid-template-columns: 1fr; gap: 40px; }
+      .faq-grid { grid-template-columns: 1fr; }
+      .cta { padding: 80px 20px; }
+      footer { padding: 24px 20px; flex-direction: column; gap: 16px; text-align: center; }
+    }
+
+    @media (max-width: 600px) {
+      .stats-inner { grid-template-columns: 1fr; }
+      .stack-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="/" class="nav-logo">ENCRYPTION<span>.md</span></a>
+    <ul class="nav-links">
+      <li><a href="#what">What is it</a></li>
+      <li><a href="#stack">The Stack</a></li>
+      <li><a href="#spec">Spec</a></li>
+      <li><a href="#faq">FAQ</a></li>
+      <li><a href="#acquire" class="nav-cta">Acquire Domain</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-grid">
+      <div class="hero-content">
+        <div class="hero-badge">Open Standard · v1.0 · 2026</div>
+        <h1 class="hero-title">ENCRYPTION<span class="ext">.md</span></h1>
+        <p class="hero-subtitle">// AI Agent Encryption Implementation Standards</p>
+        <p class="hero-desc">
+          A plain-text file convention for defining <strong>technical encryption standards</strong> AI agents must enforce. Approved algorithms, key lengths, TLS configuration, key rotation schedules, and compliance mapping — in one version-controlled file.
+        </p>
+        <div class="hero-actions">
+          <a href="https://github.com/Encryption-md/spec" class="btn-primary" target="_blank" rel="noopener">View on GitHub</a>
+          <a href="#acquire" class="btn-secondary">Acquire This Domain</a>
+        </div>
+      </div>
+      <div class="terminal">
+        <div class="terminal-bar">
+          <span class="dot dot-red"></span>
+          <span class="dot dot-yellow"></span>
+          <span class="dot dot-green"></span>
+          <span class="terminal-filename">ENCRYPTION.md</span>
+        </div>
+        <div class="terminal-body">
+          <span class="line c-section"># ENCRYPTION</span>
+          <span class="line">&nbsp;</span>
+          <span class="line c-comment">&gt; Encryption implementation standards.</span>
+          <span class="line c-comment">&gt; Spec: https://encryption.md</span>
+          <span class="line">&nbsp;</span>
+          <span class="line c-section">## REQUIREMENTS</span>
+          <span class="line">&nbsp;</span>
+          <span class="line"><span class="c-key">algorithms</span><span class="c-dim">:</span></span>
+          <span class="line">&nbsp; <span class="c-key">symmetric</span><span class="c-dim">:</span></span>
+          <span class="line">&nbsp;&nbsp;&nbsp; <span class="c-key">approved</span><span class="c-dim">:</span></span>
+          <span class="line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="c-dim">-</span> <span class="c-val">AES-256-GCM</span></span>
+          <span class="line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="c-dim">-</span> <span class="c-val">ChaCha20-Poly1305</span></span>
+          <span class="line">&nbsp;&nbsp;&nbsp; <span class="c-key">forbidden</span><span class="c-dim">:</span></span>
+          <span class="line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="c-dim">-</span> <span class="c-val">DES</span></span>
+          <span class="line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="c-dim">-</span> <span class="c-val">RC4</span></span>
+          <span class="line">&nbsp;</span>
+          <span class="line"><span class="c-key">hashing</span><span class="c-dim">:</span></span>
+          <span class="line">&nbsp; <span class="c-key">approved</span><span class="c-dim">:</span> <span class="c-val">[SHA-256, SHA-512, BLAKE3]</span></span>
+          <span class="line">&nbsp; <span class="c-key">forbidden</span><span class="c-dim">:</span> <span class="c-val">[MD5, SHA-1]</span></span>
+          <span class="line">&nbsp;</span>
+          <span class="line"><span class="c-key">key_rotation</span><span class="c-dim">:</span></span>
+          <span class="line">&nbsp; <span class="c-key">data_encryption_keys</span><span class="c-dim">:</span></span>
+          <span class="line">&nbsp;&nbsp;&nbsp; <span class="c-key">max_age_days</span><span class="c-dim">:</span> <span class="c-num">90</span></span>
+          <span class="line">&nbsp;&nbsp;&nbsp; <span class="c-key">on_breach</span><span class="c-dim">:</span> <span class="c-val">immediate</span></span>
+          <span class="line">&nbsp; <span class="c-key">api_keys</span><span class="c-dim">:</span></span>
+          <span class="line">&nbsp;&nbsp;&nbsp; <span class="c-key">max_age_days</span><span class="c-dim">:</span> <span class="c-num">30</span></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stats-inner">
+      <div class="stat">
+        <div class="stat-num">AES-256</div>
+        <div class="stat-label">approved symmetric encryption standard (AES-256-GCM with authenticated encryption)</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">TLS 1.3</div>
+        <div class="stat-label">minimum TLS version required for all new connections</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">90 days</div>
+        <div class="stat-label">maximum data encryption key age before mandatory rotation</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">4</div>
+        <div class="stat-label">compliance standards mapped: FIPS 140-3, SOC2, ISO 27001, GDPR</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WHAT IS -->
+  <section class="section" id="what">
+    <div class="section-inner">
+      <div class="section-tag">// What is ENCRYPTION.md</div>
+      <h2 class="section-title">ENCRYPT.md defines what to protect.<br>ENCRYPTION.md defines how.</h2>
+      <div class="two-col">
+        <div class="prose">
+          <p>
+            <strong>ENCRYPTION.md is a plain-text Markdown file</strong> you place in the root of any repository that contains an AI agent. It defines the technical encryption standards your agent and its infrastructure must enforce — the algorithms, key lengths, TLS requirements, and compliance mappings.
+          </p>
+          <h3>The problem it solves</h3>
+          <p>
+            AI agents handle sensitive data: API keys, user information, session state, model outputs. Without explicit encryption standards, individual developers make ad-hoc choices — often defaulting to whatever is convenient rather than what is correct. ENCRYPTION.md removes the ambiguity by making standards explicit, version-controlled, and auditable.
+          </p>
+          <h3>How it works</h3>
+          <p>
+            Drop <code style="font-family: var(--mono); font-size:13px; color: var(--green); background: var(--surface); padding: 2px 6px; border-radius: 3px;">ENCRYPTION.md</code> in your repo root and define: approved and forbidden algorithms (AES-256-GCM approved, DES and RC4 forbidden), key rotation schedules (90 days for data keys, 30 days for API keys), TLS requirements (version 1.3 minimum, HSTS required), and compliance standard mappings for FIPS, SOC2, ISO 27001, and GDPR.
+          </p>
+          <h3>The regulatory context</h3>
+          <p>
+            The <a href="https://gdpr-info.eu/art-32-gdpr/" style="color: var(--blue); text-decoration: none; border-bottom: 1px solid rgba(68,138,255,0.3);" target="_blank" rel="noopener"><strong>GDPR</strong></a> (Article 32), <a href="https://www.aicpa.org/interestareas/informationmanagement/soc2.html" style="color: var(--blue); text-decoration: none; border-bottom: 1px solid rgba(68,138,255,0.3);" target="_blank" rel="noopener"><strong>SOC2</strong></a> CC6.7, <a href="https://www.iso.org/standard/54534.html" style="color: var(--blue); text-decoration: none; border-bottom: 1px solid rgba(68,138,255,0.3);" target="_blank" rel="noopener"><strong>ISO 27001</strong></a> A.10.1, and <a href="https://eur-lex.europa.eu/eli/reg/2024/1689/oj" style="color: var(--blue); text-decoration: none; border-bottom: 1px solid rgba(68,138,255,0.3);" target="_blank" rel="noopener"><strong>EU AI Act</strong></a> (effective 2 August 2026) all mandate documented encryption controls. ENCRYPTION.md provides the auditable record each requires — version-controlled alongside your code.
+          </p>
+        </div>
+        <div class="prose">
+          <h3>How to use it</h3>
+          <p>Copy the template from <a href="https://github.com/Encryption-md/spec" style="color: var(--blue); text-decoration: none; border-bottom: 1px solid rgba(68,138,255,0.3);">GitHub</a> and place it in your project root:</p>
+          <div style="background: var(--surface); border: 1px solid var(--border-bright); border-radius: 6px; padding: 20px; margin: 16px 0; font-family: var(--mono); font-size: 12px; line-height: 1.8; color: var(--text-dim);">
+            <span style="color: var(--text-dimmer);">your-project/</span><br>
+            <span style="color: var(--text-dimmer);">├── </span><span style="color: var(--green);">ENCRYPT.md</span><br>
+            <span style="color: var(--text-dimmer);">├── </span><span style="color: var(--green);">AGENTS.md</span><br>
+            <span style="color: var(--blue); font-weight: 700;">├── ENCRYPTION.md</span> <span style="color: var(--text-dimmer);">← add this</span><br>
+            <span style="color: var(--text-dimmer);">├── README.md</span><br>
+            <span style="color: var(--text-dimmer);">└── src/</span>
+          </div>
+          <h3>The companion files</h3>
+          <p>
+            ENCRYPTION.md works alongside ENCRYPT.md. ENCRYPT.md classifies data (what is critical, sensitive, internal, or public). ENCRYPTION.md specifies the technical controls (which algorithms, which TLS versions, how to store keys). Together they provide complete data protection documentation.
+          </p>
+          <h3>Who reads it</h3>
+          <p>
+            The AI agent reads it on startup. Your security engineer reads it during code review. Your compliance team reads it during audits. Your regulator reads it if something goes wrong. One file serves all four audiences.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- THE STACK -->
+  <section class="stack" id="stack">
+    <div class="stack-inner">
+      <div class="section-tag">// The AI Safety Escalation Stack</div>
+      <h2 class="section-title">A complete protocol.<br>From slow down to shut down.</h2>
+      <p class="section-lead">ENCRYPTION.md is one file in a complete open specification for AI agent safety. The twelve-file stack provides graduated intervention from proactive slow-down through permanent shutdown and compliance enforcement.</p>
+      <div class="stack-grid">
+        <div class="stack-category">Operational Control</div>
+        <a href="https://throttle.md" class="stack-item" style="text-decoration: none; color: inherit;">
+          <div class="stack-num">01 / 12</div>
+          <div class="stack-name">THROTTLE<span class="ext">.md</span></div>
+          <div class="stack-action">→ Control the speed</div>
+          <div class="stack-desc">Define rate limits, cost ceilings, and concurrency caps. Agent slows down automatically before it hits a hard limit.</div>
+        </a>
+        <a href="https://escalate.md" class="stack-item" style="text-decoration: none; color: inherit;">
+          <div class="stack-num">02 / 12</div>
+          <div class="stack-name">ESCALATE<span class="ext">.md</span></div>
+          <div class="stack-action">→ Raise the alarm</div>
+          <div class="stack-desc">Define which actions require human approval. Configure notification channels. Set approval timeouts and fallback behaviour.</div>
+        </a>
+        <a href="https://failsafe.md" class="stack-item" style="text-decoration: none; color: inherit;">
+          <div class="stack-num">03 / 12</div>
+          <div class="stack-name">FAILSAFE<span class="ext">.md</span></div>
+          <div class="stack-action">→ Fall back safely</div>
+          <div class="stack-desc">Define what safe state means. Configure auto-snapshots. Specify the revert protocol when things go wrong.</div>
+        </a>
+        <a href="https://killswitch.md" class="stack-item" style="text-decoration: none; color: inherit;">
+          <div class="stack-num">04 / 12</div>
+          <div class="stack-name">KILL<span class="ext">SWITCH</span>.md</div>
+          <div class="stack-action">→ Emergency stop</div>
+          <div class="stack-desc">The nuclear option. Define triggers, forbidden actions, and escalation path from throttle to full shutdown.</div>
+        </a>
+        <a href="https://terminate.md" class="stack-item" style="text-decoration: none; color: inherit;">
+          <div class="stack-num">05 / 12</div>
+          <div class="stack-name">TERMINATE<span class="ext">.md</span></div>
+          <div class="stack-action">→ Permanent shutdown</div>
+          <div class="stack-desc">No restart without human intervention. Preserve evidence. Revoke credentials.</div>
+        </a>
+
+        <div class="stack-category">Data Security</div>
+        <a href="https://encrypt.md" class="stack-item" style="text-decoration: none; color: inherit;">
+          <div class="stack-num">06 / 12</div>
+          <div class="stack-name">ENCRYPT<span class="ext">.md</span></div>
+          <div class="stack-action">→ Secure everything</div>
+          <div class="stack-desc">Define data classification, encryption requirements, secrets handling rules, and forbidden transmission patterns.</div>
+        </a>
+        <div class="stack-item featured">
+          <div class="stack-num">07 / 12</div>
+          <div class="stack-name">ENCRYPTION<span class="ext">.md</span></div>
+          <div class="stack-action">→ Implement the standards</div>
+          <div class="stack-desc">Algorithms, key lengths, TLS configuration, certificate management, FIPS/SOC2/ISO compliance mapping.</div>
+        </div>
+
+        <div class="stack-category">Output Quality</div>
+        <a href="https://sycophancy.md" class="stack-item" style="text-decoration: none; color: inherit;">
+          <div class="stack-num">08 / 12</div>
+          <div class="stack-name">SYCOPHANCY<span class="ext">.md</span></div>
+          <div class="stack-action">→ Prevent bias</div>
+          <div class="stack-desc">Detect agreement without evidence. Require citations. Enforce disagreement protocol for honest AI outputs.</div>
+        </a>
+        <a href="https://compression.md" class="stack-item" style="text-decoration: none; color: inherit;">
+          <div class="stack-num">09 / 12</div>
+          <div class="stack-name">COMPRESSION<span class="ext">.md</span></div>
+          <div class="stack-action">→ Compress context</div>
+          <div class="stack-desc">Define summarization rules, what to preserve, what to discard, and post-compression coherence checks.</div>
+        </a>
+        <a href="https://collapse.md" class="stack-item" style="text-decoration: none; color: inherit;">
+          <div class="stack-num">10 / 12</div>
+          <div class="stack-name">COLLAPSE<span class="ext">.md</span></div>
+          <div class="stack-action">→ Prevent collapse</div>
+          <div class="stack-desc">Detect context exhaustion, model drift, and repetition loops. Enforce recovery checkpoints.</div>
+        </a>
+
+        <div class="stack-category">Accountability</div>
+        <a href="https://failure.md" class="stack-item" style="text-decoration: none; color: inherit;">
+          <div class="stack-num">11 / 12</div>
+          <div class="stack-name">FAILURE<span class="ext">.md</span></div>
+          <div class="stack-action">→ Define failure modes</div>
+          <div class="stack-desc">Map graceful degradation, cascading failure, and silent failure. Per-mode response procedures.</div>
+        </a>
+        <a href="https://leaderboard.md" class="stack-item" style="text-decoration: none; color: inherit;">
+          <div class="stack-num">12 / 12</div>
+          <div class="stack-name">LEADERBOARD<span class="ext">.md</span></div>
+          <div class="stack-action">→ Benchmark agents</div>
+          <div class="stack-desc">Track completion, accuracy, cost efficiency, and safety scores. Alert on regression.</div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section" id="faq">
+    <div class="section-inner">
+      <div class="section-tag">// FAQ</div>
+      <h2 class="section-title">Frequently asked questions.</h2>
+      <div class="faq-grid">
+        <div class="faq-item">
+          <h3 class="faq-q">What is ENCRYPTION.md?</h3>
+          <p class="faq-a">A plain-text Markdown file defining the technical encryption standards AI agents must enforce. It specifies approved algorithms (AES-256-GCM, ChaCha20-Poly1305), forbidden algorithms (DES, RC4, MD5, SHA-1), key rotation schedules, TLS version requirements, key storage rules, and compliance mappings for FIPS 140-3, SOC2, ISO 27001, and GDPR.</p>
+        </div>
+        <div class="faq-item">
+          <h3 class="faq-q">How is ENCRYPTION.md different from ENCRYPT.md?</h3>
+          <p class="faq-a"><strong>ENCRYPT.md</strong> defines the data protection policy — what data is critical, sensitive, internal, or public, and the rules around it. <strong>ENCRYPTION.md</strong> defines the technical implementation standards — which algorithms to use, which TLS versions are required, and how key rotation works. They are complementary: ENCRYPT.md is the "what", ENCRYPTION.md is the "how".</p>
+        </div>
+        <div class="faq-item">
+          <h3 class="faq-q">Why is TLS 1.2 forbidden?</h3>
+          <p class="faq-a">TLS 1.2 has known vulnerabilities and is deprecated by modern security standards. TLS 1.3 is faster, simpler, and eliminates entire classes of attacks (POODLE, BEAST, LUCKY13). ENCRYPTION.md requires TLS 1.3 for all new connections and only permits TLS 1.2 for legacy compatibility where strictly unavoidable.</p>
+        </div>
+        <div class="faq-item">
+          <h3 class="faq-q">How often should encryption keys be rotated?</h3>
+          <p class="faq-a">ENCRYPTION.md defines per-key-type schedules: data encryption keys rotate every 90 days (or immediately on suspected compromise), TLS certificates rotate annually (quarterly preferred), API keys rotate monthly. Breach detection always triggers immediate rotation regardless of schedule.</p>
+        </div>
+        <div class="faq-item">
+          <h3 class="faq-q">Does ENCRYPTION.md cover key storage?</h3>
+          <p class="faq-a">Yes. Approved sources: environment variables injected at runtime, secrets managers (AWS Secrets Manager, HashiCorp Vault, etc.), and hardware security modules. Forbidden: hardcoded in source code, plaintext config files committed to VCS, or stored in agent long-term memory.</p>
+        </div>
+        <div class="faq-item">
+          <h3 class="faq-q">Which compliance standards does ENCRYPTION.md map to?</h3>
+          <p class="faq-a">Four standards are mapped in the COMPLIANCE section: <strong>FIPS 140-3</strong> (federal and regulated sectors), <strong>SOC2</strong> (CC6.1, CC6.7, CC7.2), <strong>ISO 27001</strong> (A.10.1.1, A.10.1.2, A.18.1.5), and <strong>GDPR</strong> (Articles 25, 32, 33). The mapping shows which spec sections satisfy which controls.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta" id="acquire">
+    <div class="cta-inner">
+      <div class="cta-tag">// Domain Acquisition</div>
+      <h2 class="cta-title">Own the standard.<br>Own <span>encryption.md</span></h2>
+      <p class="cta-desc">
+        This domain is available for acquisition. It is the canonical home of the ENCRYPTION.md specification — the encryption implementation standards layer of the AI agent safety stack, essential for any secure production AI deployment.
+      </p>
+      <a href="mailto:info@encryption.md?subject=Domain%20Acquisition%20Inquiry%20—%20encryption.md" class="btn-primary">Inquire About Acquisition</a>
+      <p class="cta-email">Or email directly: <a href="mailto:info@encryption.md">info@encryption.md</a></p>
+    </div>
+  </section>
+
+  <!-- CITATION -->
+  <section class="citation-section">
+    <div class="citation-inner">
+      <div class="citation-box">
+        <strong>ENCRYPTION.md is an open specification</strong> for AI agent encryption implementation standards. Defines <strong>REQUIREMENTS</strong> (AES-256-GCM and ChaCha20-Poly1305 approved; DES, RC4, MD5, SHA-1 forbidden; 4096-bit minimum RSA; 90-day key rotation), <strong>IMPLEMENTATION</strong> (TLS 1.3 minimum, HSTS required, approved key storage: environment variables, secrets managers, HSMs), and <strong>COMPLIANCE</strong> (FIPS 140-3, SOC2, ISO 27001, GDPR mapping). Companion to ENCRYPT.md. Part of the stack: THROTTLE → ESCALATE → FAILSAFE → KILLSWITCH → TERMINATE → ENCRYPT → ENCRYPTION → SYCOPHANCY → COMPRESSION → COLLAPSE → FAILURE → LEADERBOARD. <strong>MIT licence.</strong>
+      </div>
+    </div>
+  </section>
+
+  <!-- LAST UPDATED -->
+  <div class="last-updated">
+    <div class="last-updated-inner">
+      <div class="last-updated-label">Last Updated</div>
+      <div class="last-updated-date">10 March 2026</div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">ENCRYPTION<span>.md</span></div>
+    <ul class="footer-links">
+      <li><a href="https://github.com/Encryption-md/spec" target="_blank" rel="noopener">GitHub</a></li>
+      <li><a href="/llms.txt">llms.txt</a></li>
+      <li><a href="mailto:info@encryption.md">Contact</a></li>
+    </ul>
+    <div class="footer-note">Open standard · MIT licence · v1.0 · 2026</div>
+  </footer>
+
+</body>
+</html>
