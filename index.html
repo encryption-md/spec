@@ -2,15 +2,16 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ENCRYPTION.md — AI Agent Encryption Implementation Standards</title>
-  <meta name="description" content="ENCRYPTION.md is an open file convention for AI agent encryption standards. Define approved algorithms, key lengths, TLS requirements, key rotation schedules, and FIPS/SOC2/ISO 27001 compliance mapping.">
+  <meta name="description" content="ENCRYPTION.md: AI encryption standards. Define algorithms, key lengths, TLS config, key rotation, FIPS 140-3, SOC 2, ISO 27001 compliance mapping.">
   <meta name="keywords" content="AI encryption standards, ENCRYPTION.md, TLS configuration, AES-256, key rotation, FIPS 140-3, SOC2 encryption, AI security">
   <link rel="canonical" href="https://encryption.md/">
 
   <!-- Open Graph -->
   <meta property="og:title" content="ENCRYPTION.md — AI Agent Encryption Implementation Standards">
-  <meta property="og:description" content="An open file convention for AI agent encryption implementation standards. Define approved algorithms, key lengths, TLS configuration, key rotation schedules, and compliance mapping.">
+  <meta property="og:description" content="ENCRYPTION.md: AI encryption standards. Define algorithms, key lengths, TLS config, key rotation, FIPS 140-3, SOC 2, ISO 27001 compliance mapping.">
   <meta property="og:url" content="https://encryption.md/">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
@@ -34,7 +35,7 @@
     "email": "info@encryption.md",
     "description": "ENCRYPTION.md is an open file convention for AI agent encryption implementation standards. It defines approved algorithms, key lengths, TLS configuration, key rotation schedules, and compliance mapping for FIPS 140-3, SOC2, ISO 27001, and GDPR.",
     "knowsAbout": ["AI encryption standards", "encryption algorithms", "TLS configuration", "key rotation", "FIPS 140-3", "SOC2 compliance", "ISO 27001", "GDPR compliance"],
-    "sameAs": ["https://github.com/encryption-md/spec", "https://killswitch.md", "https://throttle.md", "https://escalate.md", "https://failsafe.md", "https://terminate.md", "https://encrypt.md", "https://sycophancy.md", "https://compression.md", "https://collapse.md", "https://failure.md", "https://leaderboard.md"]
+    "sameAs": ["https://killswitch.md", "https://throttle.md", "https://escalate.md", "https://failsafe.md", "https://terminate.md", "https://encrypt.md", "https://encryption.md", "https://sycophancy.md", "https://compression.md", "https://collapse.md", "https://failure.md", "https://leaderboard.md", "https://github.com/Encryption-md/spec"]
   }
   </script>
 
@@ -853,6 +854,7 @@
     </ul>
   </nav>
 
+  <main>
   <!-- HERO -->
   <section class="hero">
     <div class="hero-grid">
@@ -929,6 +931,7 @@
     </div>
   </div>
 
+  <article>
   <!-- WHAT IS -->
   <section class="section" id="what">
     <div class="section-inner">
@@ -939,21 +942,21 @@
           <p>
             <strong>ENCRYPTION.md is a plain-text Markdown file</strong> you place in the root of any repository that contains an AI agent. It defines the technical encryption standards your agent and its infrastructure must enforce — the algorithms, key lengths, TLS requirements, and compliance mappings.
           </p>
-          <h3>The problem it solves</h3>
+          <h3>What problem does ENCRYPTION.md solve?</h3>
           <p>
             AI agents handle sensitive data: API keys, user information, session state, model outputs. Without explicit encryption standards, individual developers make ad-hoc choices — often defaulting to whatever is convenient rather than what is correct. ENCRYPTION.md removes the ambiguity by making standards explicit, version-controlled, and auditable.
           </p>
-          <h3>How it works</h3>
+          <h3>How does ENCRYPTION.md work?</h3>
           <p>
             Drop <code style="font-family: var(--mono); font-size:13px; color: var(--green); background: var(--surface); padding: 2px 6px; border-radius: 3px;">ENCRYPTION.md</code> in your repo root and define: approved and forbidden algorithms (AES-256-GCM approved, DES and RC4 forbidden), key rotation schedules (90 days for data keys, 30 days for API keys), TLS requirements (version 1.3 minimum, HSTS required), and compliance standard mappings for FIPS, SOC2, ISO 27001, and GDPR.
           </p>
-          <h3>The regulatory context</h3>
+          <h3>What regulations require ENCRYPTION.md?</h3>
           <p>
             The <a href="https://gdpr-info.eu/art-32-gdpr/" style="color: var(--blue); text-decoration: none; border-bottom: 1px solid rgba(68,138,255,0.3);" target="_blank" rel="noopener"><strong>GDPR</strong></a> (Article 32), <a href="https://www.aicpa.org/interestareas/informationmanagement/soc2.html" style="color: var(--blue); text-decoration: none; border-bottom: 1px solid rgba(68,138,255,0.3);" target="_blank" rel="noopener"><strong>SOC2</strong></a> CC6.7, <a href="https://www.iso.org/standard/54534.html" style="color: var(--blue); text-decoration: none; border-bottom: 1px solid rgba(68,138,255,0.3);" target="_blank" rel="noopener"><strong>ISO 27001</strong></a> A.10.1, and <a href="https://eur-lex.europa.eu/eli/reg/2024/1689/oj" style="color: var(--blue); text-decoration: none; border-bottom: 1px solid rgba(68,138,255,0.3);" target="_blank" rel="noopener"><strong>EU AI Act</strong></a> (effective 2 August 2026) all mandate documented encryption controls. ENCRYPTION.md provides the auditable record each requires — version-controlled alongside your code.
           </p>
         </div>
         <div class="prose">
-          <h3>How to use it</h3>
+          <h3>How do I add ENCRYPTION.md to my project?</h3>
           <p>Copy the template from <a href="https://github.com/Encryption-md/spec" style="color: var(--blue); text-decoration: none; border-bottom: 1px solid rgba(68,138,255,0.3);">GitHub</a> and place it in your project root:</p>
           <div style="background: var(--surface); border: 1px solid var(--border-bright); border-radius: 6px; padding: 20px; margin: 16px 0; font-family: var(--mono); font-size: 12px; line-height: 1.8; color: var(--text-dim);">
             <span style="color: var(--text-dimmer);">your-project/</span><br>
@@ -967,7 +970,7 @@
           <p>
             ENCRYPTION.md works alongside ENCRYPT.md. ENCRYPT.md classifies data (what is critical, sensitive, internal, or public). ENCRYPTION.md specifies the technical controls (which algorithms, which TLS versions, how to store keys). Together they provide complete data protection documentation.
           </p>
-          <h3>Who reads it</h3>
+          <h3>Who benefits from ENCRYPTION.md?</h3>
           <p>
             The AI agent reads it on startup. Your security engineer reads it during code review. Your compliance team reads it during audits. Your regulator reads it if something goes wrong. One file serves all four audiences.
           </p>
@@ -1129,6 +1132,8 @@
       <div class="last-updated-date">13 March 2026</div>
     </div>
   </div>
+  </article>
+  </main>
 
   <!-- FOOTER -->
   <footer>
@@ -1137,6 +1142,7 @@
       <li><a href="https://github.com/Encryption-md/spec" target="_blank" rel="noopener">GitHub</a></li>
       <li><a href="/llms.txt">llms.txt</a></li>
       <li><a href="/knowledge">Knowledge</a></li>
+      <li><a href="/privacy">Privacy</a></li>
       <li><a href="mailto:info@encryption.md">Contact</a></li>
     </ul>
     <div class="footer-note">Open standard · MIT licence · v1.0 · 2026</div>
